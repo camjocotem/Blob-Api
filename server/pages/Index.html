@@ -1,0 +1,154 @@
+<h1 id="blobapi">Blob-API</h1>
+
+<p>This NodeJS CRUD API serves as a way to dynamically manage content in a MongoDB database.</p>
+
+<hr />
+
+<h2 id="post">POST</h2>
+
+<p>localhost:3301/api/{Collection Name Here}</p>
+
+<h4 id="addingasingleitem">Adding a single item:</h4>
+
+<p>POST Url - http://localhost:3301/api/Food</p>
+
+<p>JSON Body -</p>
+
+<pre><code>{
+  "Name": "Chocolate Fondant",
+  "Type": "Dessert"
+}
+</code></pre>
+
+<h4 id="response201">Response (201):</h4>
+
+<pre><code>{ 
+  "_id" :  (New Id Here)
+  “Name”: “Chocolate Fondant”, 
+  “Type”: “Dessert” 
+}
+</code></pre>
+
+<h4 id="addingmultipleitems">Adding multiple items:</h4>
+
+<p>POST Url - http://localhost:3301/api/Food</p>
+
+<p>JSON Body -</p>
+
+<pre><code>[{
+  "Name": "Chocolate Fondant",
+  "Type": "Dessert"
+},
+{
+  "Name": "Fajitas",
+  "Type": "Savory"
+}]
+</code></pre>
+
+<hr />
+
+<h2 id="get">Get</h2>
+
+<p>localhost:3301/api/{Collection Name Here}?propertyhere=value</p>
+
+<p>OR</p>
+
+<p>localhost:3301/api/{Collection Name Here}/id-here</p>
+
+<h4 id="getallitems">Get all items</h4>
+
+<p>GET Url - http://localhost:3301/api/Food </p>
+
+<h4 id="response200">Response (200)</h4>
+
+<pre><code>[{
+  "Name": "Chocolate Fondant",
+  "Type": "Dessert"
+},
+{
+  "Name": "Fajitas",
+  "Type": "Savory"
+}]
+</code></pre>
+
+<h4 id="getasingleitem">Get a single item</h4>
+
+<p>GET Url - http://localhost:3301/api/Food?_id=id-here</p>
+
+<p>OR</p>
+
+<p>GET Url - http://localhost:3301/api/Food/id-here</p>
+
+<h4 id="response200-1">Response(200)</h4>
+
+<pre><code>{
+  "_id": "id-here"
+  "Name": "Chocolate Fondant",
+  "Type": "Dessert"
+}
+</code></pre>
+
+<hr />
+
+<h2 id="putpatch">Put/Patch</h2>
+
+<p>localhost:3301/api/{Collection Name Here}</p>
+
+<h4 id="updatingsingleitem">Updating single item:</h4>
+
+<p>POST Url - http://localhost:3301/api/Food</p>
+
+<p>JSON Body -</p>
+
+<pre><code>{
+  "_id": id-here
+  "Name": "Chocolate Fondant",
+  "Type": "Chocolate Dessert"
+}
+</code></pre>
+
+<h4 id="response200-2">Response (200):</h4>
+
+<pre><code>{
+  "ok": 1,
+  "nModified": 1,
+  "n": 1
+}
+</code></pre>
+
+<hr />
+
+<h2 id="delete">Delete</h2>
+
+<p>localhost:3301/api/{Collection Name Here}?_id=id-here</p>
+
+<h4 id="deletingasingleitem">Deleting a single item:</h4>
+
+<p>DELETE Url - http://localhost:3301/api/Food?_id=id-here</p>
+
+<h4 id="response200-3">Response (200):</h4>
+
+<pre><code>{
+  "ok": 1,
+  "n": 1
+}
+</code></pre>
+
+<hr />
+
+<h2 id="buildingrunningblobapi">Building &amp; Running Blob-API</h2>
+
+<ol>
+<li>To run Blob-API, you'll need the following things installed:
+
+
+<ul>
+<li><a href="https://nodejs.org/en/">NodeJS</a></li>
+
+<li><a href="https://www.mongodb.com/download-center?jmp=nav">MongoDB</a></li></ul>
+</li>
+
+<li>Get lib dependencies - In the /Server directory, via command line run: <code>npm install</code>.</li>
+
+<li>Run Blob-API - In the /Server directory, via command line run <code>node index.js</code></li>
+</ol>
