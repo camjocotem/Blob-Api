@@ -1,6 +1,8 @@
 Blob-API
 ===================
 
+## Do not use in a production app
+
 
 This NodeJS CRUD API serves as a way to dynamically manage content in a MongoDB database.
 
