@@ -12,7 +12,7 @@ DAL.insert = function insert(collectionName, object) {
 	if (!object) {
 		throw new Error("An object to insert is required.")
 	}
-	
+	delete object._id;
 	var collection = getOrAddCollection(collectionName);
 	return collection.insert(object);
 }

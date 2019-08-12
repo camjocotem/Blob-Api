@@ -1,12 +1,7 @@
-var db = require('./DAL.js'),
-    bodyParser = require('body-parser'),
+var bodyParser = require('body-parser'),
     express = require('express'),
-    logger = require('winston'),
     env = require('node-env-file'),
-    router = express.Router();
-
-var app = express();
-
+    app = express();
 
 env(__dirname + '/../.env');
 
@@ -16,8 +11,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-var routes = require('./routes/routes')(router);
-app.use('/', express.static('./pages'));
+var routes = require('./routes/routes');
 app.use('/api', routes);
 
 app.listen(process.env.PORT, function(){

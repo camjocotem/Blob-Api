@@ -1,18 +1,19 @@
 var db = require('../DAL.js');
-var collectionName = "test";
-var _ = require('lodash');
-
-module.exports = function (router) {
-	"use strict";
+var _ = require('lodash'),
+	express = require('express'),
+	router = express.Router();
 
 	router.all('*', function (req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, X-Auth, Content-Type, Accept");
 		next();
 	});
 
 	router.options('*', function (req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, X-Auth, Content-Type, Accept");
 		next();
 	});
 
@@ -73,14 +74,20 @@ module.exports = function (router) {
 	})
 
 	function edit(req, res) {
-		var collectionName = req.params[0];
-		if (Object.keys(req.body).length !== 0 && req.body.constructor === Object && collectionName) {
-			db.update(collectionName, req.body).done(function (response) {
-				console.log("Success result", response);
-				res.status(200).send(response);
-			});
-		} else {
-			res.status(400).send();
+		try {
+			console.log("MAKING REQUEST WITH BODY", req.body)
+			var collectionName = req.params[0];
+			if (Object.keys(req.body).length !== 0 && req.body.constructor === Object && collectionName) {
+				db.update(collectionName, req.body).done(function (response) {
+					console.log("Success result", response);
+					res.status(200).send(response);
+				});
+			} else {
+				res.status(400).send("Logic error");
+			}
+		}
+		catch (err) {
+			res.status(400).send(err);
 		}
 	}
 
@@ -96,5 +103,4 @@ module.exports = function (router) {
 		}
 	});
 
-	return router;
-};
+module.exports = router;
