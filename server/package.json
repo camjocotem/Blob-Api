@@ -13,7 +13,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.28",
-    "mongoose": "^4.9.6",
+    "mongoose": "^5.7.7",
     "node-env-file": "^0.1.8",
     "then-mongo": "^2.3.2",
     "winston": "^2.3.1"
