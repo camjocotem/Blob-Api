@@ -12,7 +12,7 @@
     "body-parser": "^1.17.2",
     "express": "^4.17.1",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.28",
+    "mongodb": "^3.6.1",
     "mongoose": "^4.9.6",
     "node-env-file": "^0.1.8",
     "then-mongo": "^2.3.2",
