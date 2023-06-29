@@ -37,13 +37,13 @@ var _ = require('lodash'),
 
 	function get(query, collectionName, res) {
 		if (query && collectionName) {
-			db.find(collectionName, query).done(function (response) {
+			db.find(collectionName, query).then(function (response) {
 				console.log("Single get");
 				res.status(200).send(response);
 			});
 		} else if (collectionName) {
 			console.log("Many get");
-			db.findAll(collectionName).done(function (response) {
+			db.findAll(collectionName).then(function (response) {
 				res.status(200).send(response);
 			});
 		} else {
@@ -57,7 +57,7 @@ var _ = require('lodash'),
 			((_.isArray(req.body) && req.body.length > 0) ||
 			 (Object.keys(req.body).length !== 0 && req.body.constructor === Object))
 			&& collectionName) {
-			db.insert(collectionName, req.body).done(function (response) {
+			db.insert(collectionName, req.body).then(function (response) {
 				res.status(201).send(response);
 			});
 		} else {
@@ -78,7 +78,7 @@ var _ = require('lodash'),
 			console.log("MAKING REQUEST WITH BODY", req.body)
 			var collectionName = req.params[0];
 			if (Object.keys(req.body).length !== 0 && req.body.constructor === Object && collectionName) {
-				db.update(collectionName, req.body).done(function (response) {
+				db.update(collectionName, req.body).then(function (response) {
 					console.log("Success result", response);
 					res.status(200).send(response);
 				});
@@ -95,7 +95,7 @@ var _ = require('lodash'),
 		var collectionName = req.params[0];
 		var id = req.query._id;
 		if (id && collectionName) {
-			db.remove(collectionName, id).done(function (response) {
+			db.remove(collectionName, id).then(function (response) {
 				res.status(200).send(response);
 			});
 		} else {

@@ -10,7 +10,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-
 var routes = require('./routes/routes');
 app.use('/api', routes);
 

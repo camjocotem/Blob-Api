@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "checkJs": true,
+        "baseUrl": "src",
+        "target": "ES6",
+        "moduleResolution": "node",    
+        "module": "NodeNext"
+      },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "server/**/*"
+    ]
+}

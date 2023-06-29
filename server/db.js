@@ -1,3 +1,3 @@
 module.exports = {
-    'url': 'mongodb://localhost/blob-api'
+    'url': 'mongodb://localhost:27017'
 };
