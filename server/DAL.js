@@ -34,7 +34,7 @@ DAL.insert = async function insert(collectionName, object) {
 	return await collection.insertOne(object);
 }
 
-DAL.update = async function update(collectionName, object) {
+DAL.update = async function update(collectionName, object, id=object._id) {
 	if (!collectionName) {
 		throw new Error("A collection name is required.")
 	}
@@ -44,10 +44,21 @@ DAL.update = async function update(collectionName, object) {
 	let db = await getDb();
 
 	var collection = db.collection(collectionName);
-	object._id = new ObjectId(object._id);
+	if(id){
+		object._id = new ObjectId(id);
+	}
+	else if(object._id){
+		object._id = new ObjectId(object._id);
+	}
+	else{
+		throw new Error("An id is required");
+	}
+
 	return collection.updateOne({
 		_id: object._id
-	}, object, {
+	}, {
+		$set:object
+	}, {
 		upsert: true
 	});
 }
@@ -67,7 +78,7 @@ DAL.remove = async function remove(collectionName, id) {
 	});
 }
 
-DAL.find = async function find(collectionName, query) {
+DAL.find = async function find(collectionName, query, isSingle=false) {
 	if (!collectionName) {
 		throw new Error("A collection name is required.")
 	}
@@ -78,6 +89,9 @@ DAL.find = async function find(collectionName, query) {
 	let db = await getDb();
 
 	var collection = db.collection(collectionName);
+	if(isSingle){
+		return await collection.findOne(query);
+	}
 	return await collection.find(query).toArray();
 }
 

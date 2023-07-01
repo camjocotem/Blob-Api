@@ -32,7 +32,7 @@ var _ = require('lodash'),
 	router.get('/*/:_id', function (req, res) {
 		var collectionName = req.params["0"];
 		delete req.params["0"]
-		get(req.params, collectionName, res);
+		get(req.params, collectionName, res, true);
 	});
 
 	/**
@@ -40,16 +40,19 @@ var _ = require('lodash'),
  * @param {any} collectionName
  * @param {import("express-serve-static-core").Response<any, Record<string, any>, number>} res
  */
-	function get(query, collectionName, res) {
+	function get(query, collectionName, res, single=false) {
 		if (Object.entries(query).length > 0 && collectionName) {
-			db.find(collectionName, query).then(function (response) {
-				console.log("Single get");
+			db.find(collectionName, query,single).then(function (response) {
 				res.status(200).send(response);
 			});
 		} else if (collectionName) {
-			console.log("Many get");
 			db.findAll(collectionName).then(function (response) {
-				res.status(200).send(response);
+				if(response && response.length === 0){
+					res.status(204).send(response);
+				}
+				else{
+					res.status(200).send(response);
+				}
 			});
 		} else {
 			res.status(400).send();
@@ -81,17 +84,22 @@ var _ = require('lodash'),
 		edit(req, res);
 	})
 
+	router.patch('/*', function (req, res, next) {
+		if (req._parsedUrl.pathname.slice(1).indexOf('/') !== -1) {
+			return next();
+		}
+		edit(req, res);
+	});
+
 	router.patch('/*', function (req, res) {
 		edit(req, res);
 	})
 
 	function edit(req, res) {
 		try {
-			console.log("MAKING REQUEST WITH BODY", req.body)
 			var collectionName = req.params[0];
 			if (Object.keys(req.body).length !== 0 && req.body.constructor === Object && collectionName) {
-				db.update(collectionName, req.body).then(function (response) {
-					console.log("Success result", response);
+				db.update(collectionName, req.body, req.params._id).then(function (response) {
 					res.status(200).send(response);
 				});
 			} else {
@@ -103,9 +111,22 @@ var _ = require('lodash'),
 		}
 	}
 
-	router.delete('/*', function (req, res) {
+	router.delete('/*', function (req, res, next) {
 		var collectionName = req.params[0];
-		var id = req.query._id;
+		if (req._parsedUrl.pathname.slice(1).indexOf('/') !== -1) {
+			return next();
+		}
+		del(req.query._id, collectionName, res);
+	});
+
+	router.delete('/*/:id', function (req, res) {
+		var collectionName = req.params["0"];
+		delete req.params["0"]
+		del(req.params.id, collectionName, res);
+	});
+
+	// @ts-ignore
+	function del(id,collectionName, res) {
 		if (id && collectionName) {
 			db.remove(collectionName, id).then(function (response) {
 				res.status(200).send(response);
@@ -113,6 +134,6 @@ var _ = require('lodash'),
 		} else {
 			res.status(400).send();
 		}
-	});
+	}
 
 module.exports = router;
