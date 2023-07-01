@@ -27,11 +27,19 @@ DAL.insert = async function insert(collectionName, object) {
 	if (!object) {
 		throw new Error("An object to insert is required.")
 	}
-	delete object._id;
+	let isArray = Array.isArray(object);
+	if(!isArray){
+		delete object._id;
+	}
 	let db = await getDb();
 
 	var collection = db.collection(collectionName);
-	return await collection.insertOne(object);
+
+	if(!isArray){
+		return await collection.insertOne(object);
+	}
+	
+	return await collection.insertMany(object);
 }
 
 DAL.update = async function update(collectionName, object, id=object._id) {
