@@ -18,5 +18,9 @@
     "node-env-file": "^0.1.8",
     "then-mongo": "^3.1.0",
     "winston": "^3.9.0"
+  },
+  "engines": {
+    "node": "18.16.1",
+    "npm": "9.5.1"
   }
 }

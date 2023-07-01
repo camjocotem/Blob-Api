@@ -35,8 +35,13 @@ var _ = require('lodash'),
 		get(req.params, collectionName, res);
 	});
 
+	/**
+ * @param {import("qs").ParsedQs | { _id: string; }} query
+ * @param {any} collectionName
+ * @param {import("express-serve-static-core").Response<any, Record<string, any>, number>} res
+ */
 	function get(query, collectionName, res) {
-		if (query && collectionName) {
+		if (Object.entries(query).length > 0 && collectionName) {
 			db.find(collectionName, query).then(function (response) {
 				console.log("Single get");
 				res.status(200).send(response);
@@ -65,9 +70,16 @@ var _ = require('lodash'),
 		}
 	});
 
-	router.put('/*', function (req, res) {
+	router.put('/*', function (req, res, next) {
+		if (req._parsedUrl.pathname.slice(1).indexOf('/') !== -1) {
+			return next();
+		}
 		edit(req, res);
 	});
+
+	router.put('/*/:_id', function (req, res) {
+		edit(req, res);
+	})
 
 	router.patch('/*', function (req, res) {
 		edit(req, res);
